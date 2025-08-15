@@ -11,7 +11,7 @@ module.exports = {
         const { REST, Routes, Collection } = require('discord.js');
         const fs = require('fs');
         const path = require('path');
-        const { ownerID, prefix } = require('../../config.json');
+    // config.json wird nicht mehr benötigt
         const TEST_GUILD_ID = '1262103703905898557';
 
         client.commands = new Collection();
