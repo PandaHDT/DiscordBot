@@ -10,5 +10,5 @@ dist/
 changelog.md
 CHANGELOG.md
 .history/
-config.json
 permissions.json
+userdata.json
