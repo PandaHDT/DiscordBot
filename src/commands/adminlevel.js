@@ -15,10 +15,18 @@ module.exports = {
             option.setName('userid')
                 .setDescription('Die UserID, deren Adminlevel angezeigt oder gesetzt werden soll')
                 .setRequired(false))
-        .addIntegerOption(option =>
+        .addStringOption(option =>
             option.setName('level')
-                .setDescription('Setzt den Adminlevel (nur für Level 5)')
-                .setRequired(false)),
+                .setDescription('Setzt den Adminlevel (nur für Alpha)')
+                .setRequired(false)
+                .addChoices(
+                    { name: 'Alpha', value: 'Alpha' },
+                    { name: 'Bravo', value: 'Bravo' },
+                    { name: 'Charlie', value: 'Charlie' },
+                    { name: 'Delta', value: 'Delta' },
+                    { name: 'Echo', value: 'Echo' }
+                )
+        ),
     async execute(interaction) {
         const { getAdminLevel, hasAdminLevel } = require('../utils/permission');
         const fs = require('fs');
@@ -26,23 +34,24 @@ module.exports = {
         const permissionsPath = path.join(__dirname, '../../permissions.json');
         let user = interaction.options.getUser('user');
         let userId = interaction.options.getString('userid');
-        let levelToSet = interaction.options.getInteger('level');
+    let levelToSet = interaction.options.getString('level');
         if (!user && !userId) user = interaction.user;
         const id = user ? user.id : userId;
-        // Abfrage: Jeder mit Level 1 darf abfragen
+        const { levels } = require('../utils/permission');
+        // Abfrage: Jeder mit Echo darf abfragen
         if (!levelToSet) {
-            if (!hasAdminLevel(interaction.user.id, 1)) {
+            if (!hasAdminLevel(interaction.user.id, 'Echo')) {
                 await interaction.reply({
                     embeds: [new EmbedBuilder()
                         .setTitle('Fehler')
-                        .setDescription('Du benötigst mindestens Adminlevel 1, um Adminlevel abzufragen.')
+                        .setDescription('Du benötigst mindestens Adminlevel Echo, um Adminlevel abzufragen.')
                         .setColor(0x23272A)
                     ],
                     flags: 64
                 });
                 return;
             }
-            const level = getAdminLevel(id);
+            const level = getAdminLevel(id) || 'Kein Level';
             const embed = new EmbedBuilder()
                 .setTitle('Adminlevel')
                 .setDescription(`<@${id}> hat Adminlevel **${level}**`)
@@ -50,12 +59,12 @@ module.exports = {
             await interaction.reply({ embeds: [embed], flags: 64 });
             return;
         }
-        // Setzen: Nur Level 5 darf setzen
-        if (!hasAdminLevel(interaction.user.id, 5)) {
+        // Setzen: Nur Alpha darf setzen
+        if (!hasAdminLevel(interaction.user.id, 'Alpha')) {
             await interaction.reply({
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
-                    .setDescription('Nur Adminlevel 5 kann Adminlevel vergeben!')
+                    .setDescription('Nur Adminlevel Alpha kann Adminlevel vergeben!')
                     .setColor(0x23272A)
                 ],
                 flags: 64
@@ -73,11 +82,11 @@ module.exports = {
             });
             return;
         }
-        if (levelToSet < 1 || levelToSet > 5) {
+        if (!levels.includes(levelToSet)) {
             await interaction.reply({
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
-                    .setDescription('Adminlevel muss zwischen 1 und 5 liegen!')
+                    .setDescription('Adminlevel muss Alpha, Bravo, Charlie, Delta oder Echo sein!')
                     .setColor(0x23272A)
                 ],
                 flags: 64

@@ -11,15 +11,24 @@ Erstelle im Hauptverzeichnis die Datei `config.json` mit folgendem Inhalt:
 }
 ```
 
+
 Erstelle im Hauptverzeichnis die Datei `permissions.json` mit folgendem Inhalt:
 
 ```json
 {
-   "DEINE_DISCORD_USERID": 5
+   "DEINE_DISCORD_USERID": "Alpha"
 }
 ```
 
-Ersetze `DEINE_DISCORD_USERID` durch deine eigene Discord UserID. Die ownerID ist automatisch Adminlevel 5.
+Ersetze `DEINE_DISCORD_USERID` durch deine eigene Discord UserID. Die ownerID ist automatisch Adminlevel Alpha (höchstes Level).
+Weitere User können z.B. so eingetragen werden:
+
+```json
+{
+   "DEINE_DISCORD_USERID": "Alpha",
+   "ANDERE_USERID": "Bravo"
+}
+```
 
 **Hinweis:** Diese Dateien dürfen nicht ins GitHub-Repo, da sie "sensible" Daten enthalten!
 
