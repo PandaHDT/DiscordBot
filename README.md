@@ -27,7 +27,7 @@ Ersetze die UserIDs durch die gewünschten Discord UserIDs. Das Adminlevel reich
 **Hinweis:** Diese Dateien dürfen nicht ins GitHub-Repo, da sie "sensible" Daten enthalten!
 
 ## Features
-- WIK 
+- WIP
 ## Installation
 1. **Repository klonen:**
    ```powershell
