@@ -1,15 +1,8 @@
 # DiscordBot
 
-## Wichtige Dateien: config.json & permissions.json
+## Wichtige Dateien: permissions.json & userdata.json
 
-
-Erstelle im Hauptverzeichnis die Datei `config.json` mit folgendem Inhalt:
-
-```json
-{
-   "prefix": "!"
-}
-```
+Alle Admin- und Userdaten werden in `permissions.json` und `userdata.json` gespeichert.
 
 Erstelle im Hauptverzeichnis die Datei `permissions.json` mit folgendem Inhalt:
 
@@ -20,7 +13,16 @@ Erstelle im Hauptverzeichnis die Datei `permissions.json` mit folgendem Inhalt:
 }
 ```
 
-Ersetze die UserIDs durch die gewünschten Discord UserIDs. Das Adminlevel reicht von Alpha (höchstes) bis Echo (niedrigstes).
+Erstelle im Hauptverzeichnis die Datei `userdata.json` mit folgendem Inhalt:
+
+```json
+{
+   "DEINE_DISCORD_USERID": 1692124800,
+   "ANDERE_USERID": 1692124800
+}
+```
+
+Ersetze die UserIDs durch die gewünschten Discord UserIDs. Das Adminlevel reicht von **ALPHA** (höchstes) bis **ECHO** (niedrigstes). Das Datum ist ein Unix-Timestamp und gibt an, seit wann der User Admin ist.
 
 **Hinweis:** Diese Dateien dürfen nicht ins GitHub-Repo, da sie "sensible" Daten enthalten!
 

@@ -25,6 +25,7 @@ module.exports = {
         const fs = require('fs');
         const path = require('path');
         const permissionsPath = path.join(__dirname, '../../permissions.json');
+            const userdataPath = path.join(__dirname, '../../userdata.json');
         let user = interaction.options.getUser('user');
         let userId = interaction.options.getString('userid');
     let levelToSet = interaction.options.getString('level');
@@ -60,7 +61,7 @@ module.exports = {
             levelNumber = levelNumber ? levelNumber[0] : '-';
             const embed = new EmbedBuilder()
                 .setTitle('Adminlevel')
-                .setDescription(`<@${id}> hat Adminlevel **${levelNumber} - ${levelName}**`)
+                .setDescription(`<@${id}> hat Adminlevel **${levelName.toUpperCase()}**`)
                 .setColor(0x23272A);
             await interaction.reply({ embeds: [embed], flags: 64 });
             return;
@@ -69,7 +70,7 @@ module.exports = {
             await interaction.reply({
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
-                    .setDescription('Nur Adminlevel Alpha kann Adminlevel vergeben!')
+                    .setDescription('Nur Adminlevel ALPHA kann Adminlevel vergeben!')
                     .setColor(0x23272A)
                 ],
                 flags: 64
@@ -99,12 +100,18 @@ module.exports = {
             });
             return;
         }
-        let permissions = {};
-        try {
-            permissions = JSON.parse(fs.readFileSync(permissionsPath, 'utf8'));
-        } catch (e) {}
-        permissions[id] = setLevelName;
-        fs.writeFileSync(permissionsPath, JSON.stringify(permissions, null, 2));
+            let permissions = {};
+            let userdata = {};
+            try {
+                permissions = JSON.parse(fs.readFileSync(permissionsPath, 'utf8'));
+            } catch (e) {}
+            try {
+                userdata = JSON.parse(fs.readFileSync(userdataPath, 'utf8'));
+            } catch (e) {}
+            permissions[id] = setLevelName;
+            userdata[id] = Math.floor(Date.now() / 1000);
+            fs.writeFileSync(permissionsPath, JSON.stringify(permissions, null, 2));
+            fs.writeFileSync(userdataPath, JSON.stringify(userdata, null, 2));
         let setLevelNumber = Object.entries(levelMap).find(([num, name]) => name === setLevelName && !isNaN(num));
         setLevelNumber = setLevelNumber ? setLevelNumber[0] : '-';
         const embed = new EmbedBuilder()
