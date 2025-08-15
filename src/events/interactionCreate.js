@@ -9,7 +9,7 @@ module.exports = {
         } catch (error) {
             console.error(error);
             if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({ content: 'Fehler beim Ausführen des Befehls!', ephemeral: true });
+                await interaction.reply({ content: 'Fehler beim Ausführen des Befehls!', flags: 64});
             }
         }
     }
