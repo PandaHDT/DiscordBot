@@ -17,15 +17,8 @@ module.exports = {
                 .setRequired(false))
         .addStringOption(option =>
             option.setName('level')
-                .setDescription('Setzt den Adminlevel (nur für Alpha)')
+                .setDescription('Setzt den Adminlevel (nur für Alpha, Zahl 1-5 oder Name)')
                 .setRequired(false)
-                .addChoices(
-                    { name: 'Alpha', value: 'Alpha' },
-                    { name: 'Bravo', value: 'Bravo' },
-                    { name: 'Charlie', value: 'Charlie' },
-                    { name: 'Delta', value: 'Delta' },
-                    { name: 'Echo', value: 'Echo' }
-                )
         ),
     async execute(interaction) {
         const { getAdminLevel, hasAdminLevel } = require('../utils/permission');
@@ -38,7 +31,18 @@ module.exports = {
         if (!user && !userId) user = interaction.user;
         const id = user ? user.id : userId;
         const { levels } = require('../utils/permission');
-        // Abfrage: Jeder mit Echo darf abfragen
+        const levelMap = {
+            '5': 'Alpha',
+            '4': 'Bravo',
+            '3': 'Charlie',
+            '2': 'Delta',
+            '1': 'Echo',
+            'Alpha': 'Alpha',
+            'Bravo': 'Bravo',
+            'Charlie': 'Charlie',
+            'Delta': 'Delta',
+            'Echo': 'Echo'
+        };
         if (!levelToSet) {
             if (!hasAdminLevel(interaction.user.id, 'Echo')) {
                 await interaction.reply({
@@ -51,15 +55,16 @@ module.exports = {
                 });
                 return;
             }
-            const level = getAdminLevel(id) || 'Kein Level';
+            const levelName = getAdminLevel(id) || 'Kein Level';
+            let levelNumber = Object.entries(levelMap).find(([num, name]) => name === levelName && !isNaN(num));
+            levelNumber = levelNumber ? levelNumber[0] : '-';
             const embed = new EmbedBuilder()
                 .setTitle('Adminlevel')
-                .setDescription(`<@${id}> hat Adminlevel **${level}**`)
+                .setDescription(`<@${id}> hat Adminlevel **${levelNumber} - ${levelName}**`)
                 .setColor(0x23272A);
             await interaction.reply({ embeds: [embed], flags: 64 });
             return;
         }
-        // Setzen: Nur Alpha darf setzen
         if (!hasAdminLevel(interaction.user.id, 'Alpha')) {
             await interaction.reply({
                 embeds: [new EmbedBuilder()
@@ -82,27 +87,29 @@ module.exports = {
             });
             return;
         }
-        if (!levels.includes(levelToSet)) {
+        let setLevelName = levelMap[levelToSet];
+        if (!setLevelName) {
             await interaction.reply({
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
-                    .setDescription('Adminlevel muss Alpha, Bravo, Charlie, Delta oder Echo sein!')
+                    .setDescription('Adminlevel muss Alpha, Bravo, Charlie, Delta, Echo oder Zahl 1-5 sein!')
                     .setColor(0x23272A)
                 ],
                 flags: 64
             });
             return;
         }
-        // Permissions.json aktualisieren
         let permissions = {};
         try {
             permissions = JSON.parse(fs.readFileSync(permissionsPath, 'utf8'));
         } catch (e) {}
-        permissions[id] = levelToSet;
+        permissions[id] = setLevelName;
         fs.writeFileSync(permissionsPath, JSON.stringify(permissions, null, 2));
+        let setLevelNumber = Object.entries(levelMap).find(([num, name]) => name === setLevelName && !isNaN(num));
+        setLevelNumber = setLevelNumber ? setLevelNumber[0] : '-';
         const embed = new EmbedBuilder()
             .setTitle('Adminlevel gesetzt')
-            .setDescription(`<@${id}> hat jetzt Adminlevel **${levelToSet}**`)
+            .setDescription(`<@${id}> hat jetzt Adminlevel **${setLevelNumber} - ${setLevelName}**`)
             .setColor(0x23272A);
         await interaction.reply({ embeds: [embed], flags: 64 });
     }

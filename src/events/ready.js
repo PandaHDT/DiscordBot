@@ -3,13 +3,11 @@ module.exports = {
     once: true,
     async execute(client) {
         console.log(`Bot ist online als ${client.user.tag}`);
-        // Rich Presence setzen
         client.user.setPresence({
-            activities: [{ name: 'am Entwickeln', type: 0 }], // type: 0 = Playing
-            status: 'online'
+            activities: [{ name: '👨‍💻 am Entwickeln', type: 4 }],
+            status: 'dnd'
         });
 
-        // Slash Commands registrieren und laden
         const { REST, Routes, Collection } = require('discord.js');
         const fs = require('fs');
         const path = require('path');

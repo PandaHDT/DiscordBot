@@ -1,10 +1,8 @@
-const { ownerID } = require('../../config.json');
 const permissions = require('../../permissions.json');
 
 const levels = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo']; // Alpha = 0 (höchstes), Echo = 4 (niedrigstes)
 
 function getAdminLevel(userId) {
-    if (userId === ownerID) return 'Alpha';
     return permissions[userId] || null;
 }
 
