@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getAdminLevel } = require('../utils/permission');
+const config = require('../../config.json');
 
 module.exports = {
     name: 'adminlevel',
@@ -50,7 +51,8 @@ module.exports = {
                     embeds: [new EmbedBuilder()
                         .setTitle('Fehler')
                         .setDescription('Du benötigst mindestens Adminlevel Echo, um Adminlevel abzufragen.')
-                        .setColor(0x23272A)
+                        .setColor(config.embedColor || '')
+                        .setFooter({ text: config.footer || '' })
                     ],
                     flags: 64
                 });
@@ -61,9 +63,10 @@ module.exports = {
             levelNumber = levelNumber ? levelNumber[0] : '-';
             const embed = new EmbedBuilder()
                 .setTitle('Adminlevel')
-                .setDescription(`<@${id}> hat Adminlevel **${levelName.toUpperCase()}**`)
-                .setColor(0x23272A);
-            await interaction.reply({ embeds: [embed], flags: 64 });
+                .setDescription(`User: <@${id}>\nLevel: **${levelName.toUpperCase()}**${levelNumber ? ` (${levelNumber[0]})` : ''}`)
+                .setColor(config.embedColor || '')
+                .setFooter({ text: config.footer || '' });
+            await interaction.reply({ embeds: [embed] });
             return;
         }
         if (!hasAdminLevel(interaction.user.id, 'Alpha')) {
@@ -71,7 +74,8 @@ module.exports = {
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
                     .setDescription('Nur Adminlevel ALPHA kann Adminlevel vergeben!')
-                    .setColor(0x23272A)
+                    .setColor(config.embedColor || '')
+                    .setFooter({ text: config.footer || '' })
                 ],
                 flags: 64
             });
@@ -82,7 +86,8 @@ module.exports = {
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
                     .setDescription('Du kannst deinen eigenen Adminlevel nicht ändern!')
-                    .setColor(0x23272A)
+                    .setColor(config.embedColor || '')
+                    .setFooter({ text: config.footer || '' })
                 ],
                 flags: 64
             });
@@ -94,7 +99,8 @@ module.exports = {
                 embeds: [new EmbedBuilder()
                     .setTitle('Fehler')
                     .setDescription('Adminlevel muss Alpha, Bravo, Charlie, Delta, Echo oder Zahl 1-5 sein!')
-                    .setColor(0x23272A)
+                    .setColor(config.embedColor || '')
+                    .setFooter({ text: config.footer || '' })
                 ],
                 flags: 64
             });
@@ -116,8 +122,9 @@ module.exports = {
         setLevelNumber = setLevelNumber ? setLevelNumber[0] : '-';
         const embed = new EmbedBuilder()
             .setTitle('Adminlevel gesetzt')
-            .setDescription(`<@${id}> hat jetzt Adminlevel **${setLevelNumber} - ${setLevelName}**`)
-            .setColor(0x23272A);
+            .setDescription(`<@${id}> hat jetzt Adminlevel **${setLevelNumber} - ${setLevelName.toUpperCase()}**`)
+            .setColor(config.embedColor || '')
+            .setFooter({ text: config.footer || '' });
         await interaction.reply({ embeds: [embed], flags: 64 });
     }
 };

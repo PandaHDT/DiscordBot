@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { levels } = require('../utils/permission');
+const config = require('../../config.json');
 
 module.exports = {
     name: 'admins',
@@ -35,7 +36,8 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Admins Übersicht')
                 .setDescription(desc)
-                .setColor(0x23272A);
+                .setColor(config.embedColor || '')
+                .setFooter({ text: config.footer || '' });
             await interactionOrMessage.reply({ embeds: [embed] });
         }
     }
