@@ -1,0 +1,16 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "PandaHDT",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.15.1",
+    "dotenv": "^16.4.5",
+    "node-fetch": "^3.3.2"
+  }
+}
