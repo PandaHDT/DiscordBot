@@ -68,16 +68,3 @@ function getAdminsData() {
             };
         });
 }
-
-function formatAdminsMarkdown(admins, client) {
-    let rows = admins.map(admin => {
-        const user = client.users.cache.get(admin.userId);
-        const username = user ? `${user.username}#${user.discriminator}` : 'Unbekannt';
-        return `| <@${admin.userId}> | ${admin.userId} | ${username} | ${admin.level} | ${admin.since} |`;
-    });
-    return [
-        '| User | UserID | Name | Level | Seit |',
-        '|------|--------|------|-------|------|',
-        ...rows
-    ].join('\n');
-}

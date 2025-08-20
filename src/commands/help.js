@@ -27,6 +27,6 @@ module.exports = {
             .setDescription(helpText || 'Keine Commands gefunden.')
             .setColor(config.embedColor || 0x5865F2)
             .setFooter({ text: config.footer || '' });
-        await interaction.reply({ embeds: [embed], flags: 64 });
+        await interaction.reply({ embeds: [embed] });
     }
 };

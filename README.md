@@ -28,6 +28,7 @@ Ersetze die UserIDs durch die gewünschten Discord UserIDs. Das Adminlevel reich
 
 ## Features
 - WIP
+
 ## Installation
 1. **Repository klonen:**
    ```powershell
@@ -50,6 +51,11 @@ Ersetze die UserIDs durch die gewünschten Discord UserIDs. Das Adminlevel reich
 
 ## Nutzung
 - WIP
+
+## Hinweis zur Entwicklung
+
+**Diese Version des Bots wird nicht weiterentwickelt und dient nur als Anfangsbuild für einen richtigen Bot.**  
+Sie ist als öffentliche, experimentelle Basis gedacht und wird nicht mit neuen Features oder Updates versorgt.
 
 ## Schluss
 Ich bin kein Profi... Jedoch probiere ich vieles aus!
